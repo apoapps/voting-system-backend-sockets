@@ -1,7 +1,8 @@
-const mongoose = require("mongoose");
-const User = require("./User.js");
+const { Schema, model } = require("mongoose");
 
-const votingPointSchema = new mongoose.Schema({
+//const User = require("./User.js");
+
+const votingPointSchema = new Schema({
   commision: {
     type: String,
     required: true,
@@ -24,24 +25,22 @@ const votingPointSchema = new mongoose.Schema({
   },
   votesFor: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
   ],
   votesAgainst: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
   ],
   votesAbstain: [
     {
-      type: mongoose.Schema.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: "User",
     },
   ],
 });
 
-const VotingPoint = mongoose.model("VotingPoint", votingPointSchema);
-
-module.exports = VotingPoint;
+module.exports = model("VotingPoint", votingPointSchema);
