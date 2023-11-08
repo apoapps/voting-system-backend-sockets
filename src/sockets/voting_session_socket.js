@@ -25,14 +25,12 @@ let isActive = false;
 const loadOrInitializeVotingSession = async () => {
   try {
     votingPoints = await VotingPoint.find();
-    // console.log("VotingPoints: " + votingPoints); // Consulta todos los VotingPoints en la base de datos
-    // console.log("End");
   } catch (err) {
     console.error(
       "Error al obtener puntos de votación desde la base de datos:",
       err
     );
-    // En caso de error, puedes manejarlo apropiadamente, como cargar los puntos predeterminados o mostrar un mensaje de error.
+
     votingPoints = defaultVotingPoints;
   }
 };
