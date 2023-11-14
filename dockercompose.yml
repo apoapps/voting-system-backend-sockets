@@ -1,0 +1,14 @@
+version: '3'
+services:
+  app:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/test
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo:6.0.6
+    ports:
+      - "27017:27017"

@@ -1,17 +1,26 @@
-# Usa una imagen base de Node.js
-FROM node:14
+# Usar una versión específica de Node.js basada en tu proyecto
+FROM node:18.16.1
 
-# Establece el directorio de trabajo en el contenedor
-WORKDIR /usr/src/app
+ENV MONGODB_URI=mongodb://mongo:27017/test
 
-# Copia los archivos del proyecto al contenedor
+# Establecer el directorio de trabajo dentro de la imagen
+WORKDIR /app
+
+# Copiar los archivos de definición del proyecto
+COPY package*.json ./
+
+# Instalar las dependencias del proyecto (incluyendo las dependencias para producción y desarrollo si es necesario)
+RUN npm install
+
+# Copiar todos los archivos del proyecto al directorio de trabajo en la imagen
 COPY . .
 
-# Instala las dependencias
-RUN npm install --production
+# Definir la variable de entorno para el puerto que tu aplicación utilizará
+ENV PORT=3001
 
-# Expón el puerto en el que se ejecutará tu aplicación
-EXPOSE 3000
+# Informar a Docker que el contenedor escuchará en el puerto 3001
+EXPOSE 3001
 
-# Comando para iniciar la aplicación
-CMD ["node", "start.js"]
+# Definir el comando que ejecutará la aplicación
+# Asegúrate de que "dev" sea un script definido en tu package.json
+CMD [ "npm", "run", "dev" ]
