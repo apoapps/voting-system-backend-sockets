@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const users = await User.find();
-    res.json(users);
+    res.status(200).json(users);
   } catch (err) {
     console.error("Error al obtener usuarios:", err);
     res.status(500).send("Error interno del servidor");
@@ -19,7 +19,7 @@ router.get("/", async (req, res) => {
 router.get("/user", async (req, res) => {
   const user = await getUserByPassword(req.query.password);
   if (user) {
-    res.json(user);
+    res.status(200).json(user);
     console.log(user);
   } else {
     console.log("Cannot get user");
