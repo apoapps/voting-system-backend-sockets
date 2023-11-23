@@ -1,5 +1,6 @@
 // votingSessionSockets.js
 
+import User from "../models/User.js";
 import VotingPoint from "../models/VotingPoint.js";
 
 let defaultVotingPoints = [
@@ -79,15 +80,52 @@ export default (io) => {
       console.log("(previousPoint) Current index: " + currentIndex);
     });
 
-    socket.on("client:votefor", (data) => {
-      const firstName = data.firstName;
-      const lastName = data.lastName;
-      const point = votingPoints[currentIndex];
+    socket.on("client:votefor", async (data) => {
+      console.log("data de votos a favor: " + JSON.stringify(data));
 
-      removePreviousVote(firstName, lastName, point);
-      point.votesFor.push(data);
-      io.emit("server:updatesession", { votingPoints, currentIndex });
+      try {
+        const point = votingPoints[currentIndex];
+        removePreviousVote(data.firstName, data.lastName, point);
+
+        // Directly push the data received if it's already the full object.
+        point.votesFor.push({
+          _id: data._id,
+          position: data.position,
+          municipalityNumber: data.municipalityNumber,
+          lastName: data.lastName,
+          firstName: data.firstName,
+          gender: data.gender,
+          party: data.party,
+        });
+
+        // Log the entire voting point to see the votesFor array.
+        console.log(
+          `Voting point after vote added: ${JSON.stringify(point, null, 2)}`
+        );
+
+        // Log the last vote added to votesFor for verification.
+        console.log(
+          "Último voto añadido: ",
+          JSON.stringify(point.votesFor[point.votesFor.length - 1])
+        );
+
+        // Log the entire votingPoints array to check the structure of all voting points.
+        console.log(
+          `All voting points after vote added: ${JSON.stringify(
+            votingPoints,
+            null,
+            2
+          )}`
+        );
+
+        io.emit("server:updatesession", { votingPoints, currentIndex });
+      } catch (error) {
+        console.error("Error processing the vote: ", error);
+      }
     });
+
+    // console.log("Numero de votos en contra" + point.votesAgainst);
+    // console.log("Numero de votos en abstencion" + point.votesAbstain);
 
     socket.on("client:voteagainst", (data) => {
       const firstName = data.firstName;

@@ -23,24 +23,9 @@ const votingPointSchema = new Schema({
     type: String,
     required: true,
   },
-  votesFor: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
-  votesAgainst: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
-  votesAbstain: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
+  votesFor: [{}], // An array of generic objects
+  votesAgainst: [{}],
+  votesAbstain: [{}],
 });
 
 module.exports = model("VotingPoint", votingPointSchema);

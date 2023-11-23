@@ -17,6 +17,7 @@ export const getUserByPassword = async (password) => {
       endDate: user.endDate,
       memberStatus: user.memberStatus,
       memberPhoto: user.memberPhoto,
+      _id: user._id,
     };
   } catch (error) {
     console.error("Error al buscar usuario:", error);
