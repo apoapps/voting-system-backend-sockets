@@ -22,6 +22,16 @@ let currentIndex = 0;
 //tells if the session is active
 let isActive = false;
 
+const updateVotingPointsInDb = async (point) => {
+  try {
+    // Actualiza el punto de votación específico en la base de datos usando su _id
+    await VotingPoint.findByIdAndUpdate(point._id, point, { new: true });
+    console.log(`Voting point with id ${point._id} updated in DB.`);
+  } catch (error) {
+    console.error(`Error updating voting point with id ${point._id}: `, error);
+  }
+};
+
 // Carga la sesión de votación existente o crea una nueva al iniciar el servidor
 const loadOrInitializeVotingSession = async () => {
   try {
@@ -117,6 +127,7 @@ export default (io) => {
             2
           )}`
         );
+        updateVotingPointsInDb(point);
 
         io.emit("server:updatesession", { votingPoints, currentIndex });
       } catch (error) {
@@ -134,6 +145,7 @@ export default (io) => {
 
       removePreviousVote(firstName, lastName, point);
       point.votesAgainst.push(data);
+      updateVotingPointsInDb(point);
       io.emit("server:updatesession", { votingPoints, currentIndex });
     });
 
@@ -144,6 +156,7 @@ export default (io) => {
 
       removePreviousVote(firstName, lastName, point);
       point.votesAbstain.push(data);
+      updateVotingPointsInDb(point);
       io.emit("server:updatesession", { votingPoints, currentIndex });
     });
   });
