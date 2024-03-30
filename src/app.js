@@ -16,7 +16,6 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/users", userRoutes);
 app.use("/voting-session", votingSessionRoutes);
 
-
 app.get("/download-voting-points", async (req, res) => {
   try {
     const votingPoints = await VotingPoint.find();

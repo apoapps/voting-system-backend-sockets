@@ -3,6 +3,8 @@ FROM node:18.16.1
 
 ENV MONGODB_URI=mongodb://mongo:27017/test
 
+ENV DEBUG=app:api
+
 # Establecer el directorio de trabajo dentro de la imagen
 WORKDIR /app
 

@@ -19,8 +19,8 @@ let defaultVotingPoints = [
 
 let votingPoints = [];
 let currentIndex = 0;
-//tells if the session is active
 let isActive = false;
+let activeSessions = {};
 
 const updateVotingPointsInDb = async (point) => {
   try {
