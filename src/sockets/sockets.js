@@ -18,6 +18,20 @@ export default (io) => {
         io.emit("server:loginerror", {});
       }
     });
+    // Esta función podría ser llamada periódicamente usando setInterval
+    function checkForInactiveUsers() {
+      const TIMEOUT = 300000; // 5 minutos en milisegundos
+      const now = Date.now();
+      Object.keys(activeSessions).forEach((userId) => {
+        if (now - activeSessions[userId].lastHeartbeat > TIMEOUT) {
+          // Aquí implementarías la lógica para cerrar la sesión del usuario
+          console.log(`Usuario ${userId} ha sido desconectado por inactividad`);
+          delete activeSessions[userId];
+       
+        }
+      });
+    }
+    setInterval(checkForInactiveUsers, 60000); // Revisa cada minuto
 
     socket.on("client:updateuser", async (updatedUserData) => {
       try {

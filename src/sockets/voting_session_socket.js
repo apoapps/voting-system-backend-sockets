@@ -20,7 +20,6 @@ let defaultVotingPoints = [
 let votingPoints = [];
 let currentIndex = 0;
 let isActive = false;
-let activeSessions = {};
 
 const updateVotingPointsInDb = async (point) => {
   try {
@@ -56,6 +55,13 @@ export default (io) => {
       isActive = status;
       io.emit("server:sessionstatus", isActive);
     });
+
+    // socket.on("heartbeat", (userId) => {
+    //   console.log(`Heartbeat recibido de ${userId}`);
+    //   if (activeSessions[userId]) {
+    //     activeSessions[userId].lastHeartbeat = Date.now();
+    //   }
+    // });
 
     // console.log("Sesion  iniciada");
     socket.on("client:getsession", async () => {
